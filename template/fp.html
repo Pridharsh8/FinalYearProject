@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Third Eye</title>
+    <style>
+        /* Center content and style the page */
+        body, html {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: #1c134b;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 80%;
+        }
+
+        .image-container {
+            margin-bottom: 20px;
+        }
+
+        .image-container img {
+            max-width: 150px;
+            border-radius: 50%;
+        }
+
+        .title {
+            font-size: 2em;
+            font-weight: bold;
+            color: #fffbfb;
+            margin-top: 10px;
+        }
+
+        .message {
+            font-size: 1.5em;
+            color: #f4f4f4;
+            border-right: 2px solid #333;
+            white-space: nowrap;
+            overflow: hidden;
+            margin-top: 20px;
+            display: inline-block;
+            width: auto; 
+            white-space: normal;
+            animation: blink-caret 1.75s step-end infinite;
+        }
+
+        /* Blinking caret animation */
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #333; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Image and title -->
+        <div class="image-container">
+            <img src="eyelogo.png" alt="Third Eye Logo">
+        </div>
+        <div class="title">THIRD EYE</div>
+
+        <!-- Typing message -->
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        // Message to be typed and read aloud
+        const messageContent = "Welcome to third eye. I am your virtual assistant. Press 1 for login and press 2 for register.";
+
+        // Function to type the message one character at a time
+        function typeMessage(message) {
+            const messageElement = document.getElementById("message");
+            let index = 0;
+
+            function typeNextCharacter() {
+                if (index < message.length) {
+                    messageElement.innerHTML += message[index];
+                    index++;
+                    setTimeout(typeNextCharacter, 100); // Adjust typing speed here
+                }
+            }
+            typeNextCharacter();
+        }
+
+        // Function to speak the given message
+        function speakMessage(message) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(message);
+                speechSynthesis.speak(utterance);
+            } else {
+                console.log("Text-to-speech is not supported in this browser.");
+            }
+        }
+
+        // Automatically start typing and speaking the message when the page loads
+        window.addEventListener('load', () => {
+            // Start typing and speaking at the same time
+            typeMessage(messageContent);
+            speakMessage(messageContent);
+        });
+
+        // Listen for key presses for actions
+        window.addEventListener('keydown', (event) => {
+            if (event.key === '1') {
+                speakMessage("Navigating to login.");
+                // Uncomment to redirect to login page
+                // window.location.href = '/login';
+            } else if (event.key === '2') {
+                speakMessage("Navigating to register.");
+                // Uncomment to redirect to register page
+                // window.location.href = '/register';
+            }
+        });
+    </script>
+</body>
+</html>
